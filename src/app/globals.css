@@ -24,3 +24,174 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* === HOLOGRAPHIC CHROMATIC GLITTER EFFECT === */
+/* Based on Pokémon/Yu-Gi-Oh card foil aesthetics */
+
+@keyframes chroma-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes shimmer-sparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(180deg);
+  }
+}
+
+/* Holographic gradient overlay */
+.holo-chroma {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 0, 128, 0.4) 0%,
+    rgba(255, 154, 0, 0.4) 15%,
+    rgba(208, 252, 59, 0.4) 30%,
+    rgba(79, 252, 156, 0.4) 45%,
+    rgba(63, 188, 252, 0.4) 60%,
+    rgba(155, 88, 252, 0.4) 75%,
+    rgba(255, 0, 128, 0.4) 100%
+  );
+  background-size: 400% 400%;
+  animation: chroma-shift 3s ease infinite;
+  z-index: 1;
+}
+
+/* Glitter particle overlay */
+.holo-glitter::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath d='M1 1h1v1H1zm2 0h1v1H3zM1 3h1v1H1zm2-2h1v1H3z' fill='white' fill-opacity='0.4'/%3E%3C/svg%3E");
+  animation: shimmer-sparkle 2s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.6;
+}
+
+/* Rarity-based chromatic borders */
+.holo-border-legendary {
+  border: 3px solid transparent;
+  background: 
+    linear-gradient(#0a0a0b, #0a0a0b) padding-box,
+    linear-gradient(135deg, #fbbf24, #f59e0b, #ef4444, #f59e0b, #fbbf24) border-box;
+  background-size: 200% 200%;
+  animation: chroma-shift 2s ease infinite;
+}
+
+.holo-border-rare {
+  border: 3px solid transparent;
+  background: 
+    linear-gradient(#0a0a0b, #0a0a0b) padding-box,
+    linear-gradient(135deg, #a855f7, #6366f1, #a855f7) border-box;
+  background-size: 200% 200%;
+  animation: chroma-shift 2.5s ease infinite;
+}
+
+.holo-border-uncommon {
+  border: 3px solid transparent;
+  background: 
+    linear-gradient(#0a0a0b, #0a0a0b) padding-box,
+    linear-gradient(135deg, #14b8a6, #06b6d4, #14b8a6) border-box;
+  background-size: 200% 200%;
+  animation: chroma-shift 3s ease infinite;
+}
+
+.holo-border-common {
+  border: 2px solid rgba(255,255,255,0.2);
+}
+
+/* Subtle rainbow sheen */
+.holo-sheen {
+  position: relative;
+  overflow: hidden;
+}
+
+.holo-sheen::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255,255,255,0.1) 25%,
+    rgba(255,255,255,0.2) 50%,
+    rgba(255,255,255,0.1) 75%,
+    transparent 100%
+  );
+  transform: rotate(30deg);
+  animation: chroma-shift 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* === FULL CARD HOLOGRAPHIC EFFECTS === */
+
+/* Full card background with rarity colors - always visible */
+.holo-fullcard-bg {
+  background-size: 400% 400%;
+  animation: chroma-shift 4s ease infinite;
+  mix-blend-mode: soft-light;
+}
+
+/* Moving shimmer that sweeps across entire card */
+.holo-shimmer-bg {
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(255,255,255,0.15) 40%,
+    rgba(255,255,255,0.3) 45%,
+    rgba(255,255,255,0.15) 50%,
+    transparent 60%
+  );
+  background-size: 300% 300%;
+  animation: shimmer-sweep 4s ease-in-out infinite;
+}
+
+@keyframes shimmer-sweep {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Full card glitter overlay - constant sparkles */
+.holo-glitter-full::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='3' height='3' viewBox='0 0 3 3'%3E%3Ccircle cx='1.5' cy='1.5' r='1' fill='white' fill-opacity='0.5'/%3E%3C/svg%3E");
+  background-size: 16px 16px;
+  animation: sparkle-twinkle 1.5s ease-in-out infinite;
+}
+
+@keyframes sparkle-twinkle {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* Intense holo effect for legendary cards */
+.holo-fullcard-bg.legendary {
+  filter: brightness(1.2);
+}
