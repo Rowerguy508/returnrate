@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Search, RotateCcw, Star, Zap, Shield, Truck, Award } from "lucide-react";
 
@@ -210,17 +210,28 @@ function TCGCard({ brand, logo, score, returnDays, freeShippingThreshold, rank, 
 export default function Home() {
   const [selectedBrand, setSelectedBrand] = useState<{name: string; logo: string; score: number; returnDays: number; freeShippingThreshold: number} | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [brands, setBrands] = useState<Array<{name: string; logo: string; score: number; returnDays: number; freeShippingThreshold: number}>>([]);
 
-  const brands = [
-    { name: "Amazon", logo: "https://www.google.com/s2/favicons?domain=amazon.com&sz=128", score: 85, returnDays: 30, freeShippingThreshold: 25 },
-    { name: "Costco", logo: "https://www.google.com/s2/favicons?domain=costco.com&sz=128", score: 82, returnDays: 90, freeShippingThreshold: 75 },
-    { name: "Target", logo: "https://www.google.com/s2/favicons?domain=target.com&sz=128", score: 80, returnDays: 90, freeShippingThreshold: 35 },
-    { name: "Zappos", logo: "https://www.google.com/s2/favicons?domain=zappos.com&sz=128", score: 78, returnDays: 365, freeShippingThreshold: 0 },
-    { name: "REI", logo: "https://www.google.com/s2/favicons?domain=rei.com&sz=128", score: 75, returnDays: 90, freeShippingThreshold: 50 },
-    { name: "Walmart", logo: "https://www.google.com/s2/favicons?domain=walmart.com&sz=128", score: 75, returnDays: 90, freeShippingThreshold: 35 },
-    { name: "Best Buy", logo: "https://www.google.com/s2/favicons?domain=bestbuy.com&sz=128", score: 70, returnDays: 15, freeShippingThreshold: 35 },
-    { name: "Nordstrom", logo: "https://www.google.com/s2/favicons?domain=nordstrom.com&sz=128", score: 72, returnDays: 30, freeShippingThreshold: 0 },
-  ];
+  // Fetch brands from API on mount
+  useEffect(() => {
+    fetch('/api/brands?limit=100')
+      .then(res => res.json())
+      .then(data => {
+        if (data.results) {
+          const mapped = data.results.map((b: any) => ({
+            name: b.name,
+            logo: `https://www.google.com/s2/favicons?domain=${b.domain}&sz=128`,
+            score: b.overall_score,
+            returnDays: b.return_days,
+            freeShippingThreshold: b.free_shipping_threshold,
+          }));
+          setBrands(mapped);
+        }
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
 
   const filteredBrands = searchQuery 
     ? brands.filter(b => b.name.toLowerCase().includes(searchQuery.toLowerCase()))
