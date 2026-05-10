@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import { Search, RotateCcw, Star, Zap, Shield, Truck, Award } from "lucide-react";
 
 // Card Rarity determines foil effect
@@ -134,12 +133,14 @@ function TCGCard({ brand, logo, score, returnDays, freeShippingThreshold, rank, 
         >
           {/* White art background */}
           <div className="w-full h-full flex items-center justify-center bg-white">
-            <Image
+            <img
               src={logo}
               alt={brand}
-              width={90}
-              height={90}
-              className="object-contain"
+              className="object-contain w-20 h-20"
+              onError={(e) => {
+                // Fallback to Google favicon if brand favicon fails
+                (e.target as HTMLImageElement).src = `https://www.google.com/s2/favicons?domain=${brand.toLowerCase()}.com&sz=128`;
+              }}
             />
           </div>
           {/* Art frame */}
@@ -219,9 +220,12 @@ export default function Home() {
       .then(res => res.json())
       .then(data => {
         if (data.results) {
+          // Get logo from brand's own favicon (always up to date)
+const getLogo = (domain: string) => `https://${domain}/favicon.ico`;
+
           const mapped = data.results.map((b: any) => ({
             name: b.name,
-            logo: `https://www.google.com/s2/favicons?domain=${b.domain}&sz=128`,
+            logo: getLogo(b.domain),
             score: b.overall_score,
             returnDays: b.return_days,
             freeShippingThreshold: b.free_shipping_threshold,
