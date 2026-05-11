@@ -474,21 +474,68 @@ const getLogo = (name: string, domain: string) => {
           {/* Backdrop */}
           <div className="absolute inset-0 bg-black/90 backdrop-blur-md" />
           
-          {/* Full Detail Card - With Holographic Effects */}
+          {/* Full Detail Card - With Holographic Effects using real divs */}
           <div 
             className="relative max-w-2xl w-full max-h-[90vh] overflow-y-auto"
             onClick={e => e.stopPropagation()}
           >
-            {/* Main Card - Super Detailed + HOLOGRAPHIC */}
-            <div className={`relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl p-6 border-2 shadow-2xl overflow-hidden ${selectedBrand.score >= 80 ? 'holo-foil holo-glitter' : ''} ${selectedBrand.score >= 95 ? 'holo-border-legendary' : selectedBrand.score >= 90 ? 'holo-border-legendary' : selectedBrand.score >= 80 ? 'holo-border-rare' : 'border-slate-700'}`}>
+            {/* Main Card - Super Detailed + REAL HOLOGRAPHIC DIVS */}
+            <div className={`relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl p-6 border-2 shadow-2xl overflow-hidden ${selectedBrand.score >= 95 ? 'holo-border-legendary' : selectedBrand.score >= 90 ? 'holo-border-legendary' : selectedBrand.score >= 80 ? 'holo-border-rare' : 'border-slate-700'}`}>
               
-              {/* Holographic overlay for rare/legendary */}
+              {/* LAYER 1: Full-card rainbow chroma background (REAL DIV) */}
               {selectedBrand.score >= 80 && (
-                <>
-                  <div className="absolute inset-0 holo-shimmer-bg z-[5]" />
-                  <div className="absolute inset-0 holo-chroma z-[6]" />
-                  <div className="absolute inset-0 holo-legendary z-[7]" />
-                </>
+                <div 
+                  className="absolute inset-0 z-[1] pointer-events-none"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(255,0,128,0.35) 0%, rgba(255,154,0,0.35) 15%, rgba(208,252,59,0.3) 30%, rgba(79,252,156,0.3) 45%, rgba(63,188,252,0.35) 60%, rgba(155,88,252,0.35) 75%, rgba(255,0,128,0.35) 100%)',
+                    backgroundSize: '400% 400%',
+                    animation: 'chroma-shift 3s ease infinite',
+                  }}
+                />
+              )}
+              
+              {/* LAYER 2: Shimmer sweep (REAL DIV) */}
+              {selectedBrand.score >= 80 && (
+                <div 
+                  className="absolute inset-0 z-[2] pointer-events-none"
+                  style={{
+                    background: 'linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.2) 40%, rgba(255,255,255,0.4) 45%, rgba(255,255,255,0.2) 50%, transparent 60%)',
+                    backgroundSize: '300% 300%',
+                    animation: 'shimmer-sweep 4s ease-in-out infinite',
+                  }}
+                />
+              )}
+              
+              {/* LAYER 3: Rainbow wave for legendary (REAL DIV) */}
+              {selectedBrand.score >= 90 && (
+                <div 
+                  className="absolute inset-0 z-[3] pointer-events-none"
+                  style={{
+                    background: 'linear-gradient(45deg, transparent 25%, rgba(255,200,100,0.25) 35%, rgba(255,255,255,0.5) 42%, rgba(255,255,255,0.5) 45%, rgba(255,200,100,0.25) 55%, transparent 75%)',
+                    backgroundSize: '200% 200%',
+                    animation: 'rainbow-wave 2.5s linear infinite',
+                  }}
+                />
+              )}
+              
+              {/* LAYER 4: Glitter sparkles (REAL DIV with dots) */}
+              {selectedBrand.score >= 80 && (
+                <div 
+                  className="absolute inset-0 z-[4] pointer-events-none"
+                  style={{
+                    backgroundImage: `
+                      radial-gradient(1px 1px at 10% 10%, white 100%, transparent),
+                      radial-gradient(1.5px 1.5px at 25% 30%, rgba(255,255,255,0.9) 100%, transparent),
+                      radial-gradient(1px 1px at 40% 15%, #fbbf24 100%, transparent),
+                      radial-gradient(1.5px 1.5px at 55% 45%, rgba(255,255,255,0.8) 100%, transparent),
+                      radial-gradient(1px 1px at 70% 25%, #a855f7 100%, transparent),
+                      radial-gradient(1.2px 1.2px at 85% 60%, #06b6d4 100%, transparent),
+                      radial-gradient(1px 1px at 15% 70%, rgba(255,255,255,0.85) 100%, transparent),
+                      radial-gradient(1.5px 1.5px at 60% 80%, #fbbf24 100%, transparent)`,
+                    backgroundSize: '80px 80px',
+                    animation: 'sparkle-twinkle 1.5s ease-in-out infinite',
+                  }}
+                />
               )}
               
               {/* Card Content - above the holographic layers */}
