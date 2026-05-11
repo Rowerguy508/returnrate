@@ -292,14 +292,14 @@ const BRAND_LOGOS: Record<string, string> = {
   'staples': 'https://upload.wikimedia.org/wikipedia/commons/8/84/Staples_Logo.svg',
 };
 
-// Get real brand logo - prefer Wikimedia, fallback to brand favicon
+// Get real brand logo - prefer Wikimedia, fallback to Google favicon
 const getLogo = (name: string, domain: string) => {
   // Normalize: "Under Armour" -> "underarmor", "Best Buy" -> "bestbuy"
   const key = name.toLowerCase().replace(/[^a-z]/g, '').replace(/armour/g, 'armor'); // fix Under Armour
   if (BRAND_LOGOS[key]) return BRAND_LOGOS[key];
   
-  // Try brand favicon for unknown brands
-  return `https://${domain}/favicon.ico`;
+  // Try Google favicon (more reliable than brand favicon)
+  return `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
 };
 
           const mapped = data.results.map((b: any) => ({
@@ -518,24 +518,74 @@ const getLogo = (name: string, domain: string) => {
                 />
               )}
               
-              {/* LAYER 4: Glitter sparkles (REAL DIV with dots) */}
+{/* LAYER 4: MEGA GLITTER - Many more sparkles + animated */}
               {selectedBrand.score >= 80 && (
-                <div 
-                  className="absolute inset-0 z-[4] pointer-events-none"
-                  style={{
-                    backgroundImage: `
-                      radial-gradient(1px 1px at 10% 10%, white 100%, transparent),
-                      radial-gradient(1.5px 1.5px at 25% 30%, rgba(255,255,255,0.9) 100%, transparent),
-                      radial-gradient(1px 1px at 40% 15%, #fbbf24 100%, transparent),
-                      radial-gradient(1.5px 1.5px at 55% 45%, rgba(255,255,255,0.8) 100%, transparent),
-                      radial-gradient(1px 1px at 70% 25%, #a855f7 100%, transparent),
-                      radial-gradient(1.2px 1.2px at 85% 60%, #06b6d4 100%, transparent),
-                      radial-gradient(1px 1px at 15% 70%, rgba(255,255,255,0.85) 100%, transparent),
-                      radial-gradient(1.5px 1.5px at 60% 80%, #fbbf24 100%, transparent)`,
-                    backgroundSize: '80px 80px',
-                    animation: 'sparkle-twinkle 1.5s ease-in-out infinite',
-                  }}
-                />
+                <>
+                  {/* Static sparkles layer */}
+                  <div 
+                    className="absolute inset-0 z-[4] pointer-events-none"
+                    style={{
+                      backgroundImage: `
+                        radial-gradient(1.2px 1.2px at 5% 8%, white 100%, transparent),
+                        radial-gradient(1.8px 1.8px at 12% 22%, #fbbf24 100%, transparent),
+                        radial-gradient(1.5px 1.5px at 18% 35%, rgba(255,255,255,0.95) 100%, transparent),
+                        radial-gradient(1.3px 1.3px at 25% 15%, #a855f7 100%, transparent),
+                        radial-gradient(1.6px 1.6px at 32% 42%, rgba(255,255,255,0.9) 100%, transparent),
+                        radial-gradient(1.4px 1.4px at 40% 28%, #06b6d4 100%, transparent),
+                        radial-gradient(1.2px 1.2px at 48% 52%, white 100%, transparent),
+                        radial-gradient(1.7px 1.7px at 55% 18%, #f472b6 100%, transparent),
+                        radial-gradient(1.3px 1.3px at 62% 38%, rgba(255,255,255,0.85) 100%, transparent),
+                        radial-gradient(1.5px 1.5px at 70% 25%, #fbbf24 100%, transparent),
+                        radial-gradient(1.2px 1.2px at 78% 48%, #a855f7 100%, transparent),
+                        radial-gradient(1.6px 1.6px at 85% 12%, rgba(255,255,255,0.9) 100%, transparent),
+                        radial-gradient(1.4px 1.4px at 92% 35%, #06b6d4 100%, transparent),
+                        radial-gradient(1.3px 1.3px at 8% 58%, white 100%, transparent),
+                        radial-gradient(1.5px 1.5px at 15% 72%, #f472b6 100%, transparent),
+                        radial-gradient(1.2px 1.2px at 22% 85%, rgba(255,255,255,0.8) 100%, transparent),
+                        radial-gradient(1.6px 1.6px at 38% 65%, #fbbf24 100%, transparent),
+                        radial-gradient(1.4px 1.4px at 45% 78%, rgba(255,255,255,0.9) 100%, transparent),
+                        radial-gradient(1.3px 1.3px at 52% 62%, #a855f7 100%, transparent),
+                        radial-gradient(1.5px 1.5px at 65% 55%, white 100%, transparent),
+                        radial-gradient(1.2px 1.2px at 72% 72%, #06b6d4 100%, transparent),
+                        radial-gradient(1.7px 1.7px at 82% 68%, rgba(255,255,255,0.85) 100%, transparent),
+                        radial-gradient(1.3px 1.3px at 88% 82%, #f472b6 100%, transparent),
+                        radial-gradient(1.4px 1.4px at 95% 58%, white 100%, transparent)`,
+                      backgroundSize: '80px 80px',
+                      animation: 'glitter-sparkle 2s ease-in-out infinite',
+                    }}
+                  />
+                  {/* Animated floating sparkles */}
+                  <div 
+                    className="absolute inset-0 z-[4] pointer-events-none"
+                    style={{
+                      backgroundImage: `
+                        radial-gradient(2px 2px at 20% 20%, white 100%, transparent),
+                        radial-gradient(2.5px 2.5px at 50% 50%, rgba(255,255,255,0.9) 100%, transparent),
+                        radial-gradient(2px 2px at 80% 30%, #fbbf24 100%, transparent),
+                        radial-gradient(2.2px 2.2px at 35% 70%, #a855f7 100%, transparent),
+                        radial-gradient(1.8px 1.8px at 65% 80%, rgba(255,255,255,0.85) 100%, transparent)`,
+                      backgroundSize: '150px 150px',
+                      animation: 'glitter-float 3s ease-in-out infinite',
+                    }}
+                  />
+                  {/* Extra tiny starbursts */}
+                  <div 
+                    className="absolute inset-0 z-[4] pointer-events-none"
+                    style={{
+                      backgroundImage: `
+                        radial-gradient(0.8px 0.8px at 10% 50%, white 100%, transparent),
+                        radial-gradient(1px 1px at 30% 10%, #fbbf24 100%, transparent),
+                        radial-gradient(0.8px 0.8px at 50% 90%, rgba(255,255,255,0.9) 100%, transparent),
+                        radial-gradient(1px 1px at 70% 60%, #a855f7 100%, transparent),
+                        radial-gradient(0.8px 0.8px at 90% 40%, #06b6d4 100%, transparent),
+                        radial-gradient(1px 1px at 25% 75%, #f472b6 100%, transparent),
+                        radial-gradient(0.8px 0.8px at 75% 25%, white 100%, transparent),
+                        radial-gradient(1px 1px at 60% 40%, #fbbf24 100%, transparent)`,
+                      backgroundSize: '60px 60px',
+                      animation: 'glitter-twinkle 1.5s ease-in-out infinite',
+                    }}
+                  />
+                </>
               )}
               
               {/* Card Content - above the holographic layers */}
@@ -543,8 +593,8 @@ const getLogo = (name: string, domain: string) => {
               {/* Header - Brand Name + HP */}
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <h2 className="text-2xl font-bold text-white">{selectedBrand.name}</h2>
-                  <p className="text-slate-400 text-sm">Elite Retailer Collection</p>
+                  <h2 className="text-2xl font-bold text-white drop-shadow-lg">{selectedBrand.name}</h2>
+                  <p className="text-slate-300 text-sm drop-shadow-md">Elite Retailer Collection</p>
                 </div>
                 <div className="text-right">
                   <div className={`inline-block px-4 py-1 rounded-full ${selectedBrand.score >= 90 ? 'bg-gradient-to-r from-amber-500 to-yellow-400' : selectedBrand.score >= 80 ? 'bg-gradient-to-r from-purple-500 to-cyan-500' : 'bg-gradient-to-r from-slate-600 to-slate-500'}`}>
