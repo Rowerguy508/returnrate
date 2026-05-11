@@ -74,7 +74,7 @@ function TCGCard({ brand, logo, score, returnDays, freeShippingThreshold, rank, 
       onClick={onClick}
     >
       {/* === POKEMON CARD LAYOUT === */}
-      <div className={`relative w-full aspect-[63/88] min-h-[320px] bg-[#1a1a1e] rounded-[18px] overflow-hidden shadow-2xl transform transition-all duration-300 group-hover:scale-105 ${isHolo ? 'holo-card' : ''}`}>
+      <div className={`relative w-full aspect-[63/88] min-h-[320px] bg-[#1a1a1e] rounded-[18px] overflow-hidden shadow-2xl transform transition-all duration-300 group-hover:scale-105 ${isHolo ? 'holo-foil' : ''}`}>
         
         {/* === FULL HOLOGRAPHIC FOIL BACKGROUND - ONLY Legendary/Rare === */}
         {isHolo && (
@@ -83,9 +83,14 @@ function TCGCard({ brand, logo, score, returnDays, freeShippingThreshold, rank, 
           }} />
         )}
         
-        {/* Shimmer overlay - ONLY Legendary/Rare */}
-        {isHolo && <div className="absolute inset-0 holo-shimmer-bg z-[5]" />}
-        {isHolo && <div className="absolute inset-0 holo-glitter-full z-[6]" />}
+        {/* Shimmer overlay - ONLY Legendary/Rare - ENHANCED GLITTER */}
+        {isHolo && (
+          <>
+            <div className="absolute inset-0 holo-shimmer-bg z-[5]" />
+            <div className="absolute inset-0 holo-glitter z-[6]" />
+            <div className="absolute inset-0 holo-legendary z-[7]" />
+          </>
+        )}
         
         {/* === CARD FRAME BORDER === */}
         <div className="absolute inset-0 rounded-[18px] overflow-hidden">
@@ -201,7 +206,7 @@ function TCGCard({ brand, logo, score, returnDays, freeShippingThreshold, rank, 
 
         {/* HOVER: Extra chromatic shimmer - ONLY Legendary/Rare */}
         {isHolo && (
-          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-[18px] holo-chroma holo-glitter z-[15] pointer-events-none" />
+          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-[18px] holo-chroma holo-glitter holo-legendary z-[15] pointer-events-none" />
         )}
       </div>
     </div>
@@ -285,14 +290,12 @@ const BRAND_LOGOS: Record<string, string> = {
   'wish': 'https://upload.wikimedia.org/wikipedia/commons/7/76/Wish_Logo.svg',
   // Office
   'staples': 'https://upload.wikimedia.org/wikipedia/commons/8/84/Staples_Logo.svg',
-  'officedepot': 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Occupancy_Depot_Logo.svg',
-  'officemax': 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Occupancy_Depot_Logo.svg',
 };
 
 // Get real brand logo - prefer Wikimedia, fallback to brand favicon
 const getLogo = (name: string, domain: string) => {
-  // Try Wikimedia first for known brands
-  const key = name.toLowerCase().replace(/[^a-z]/g, '');
+  // Normalize: "Under Armour" -> "underarmor", "Best Buy" -> "bestbuy"
+  const key = name.toLowerCase().replace(/[^a-z]/g, '').replace(/armour/g, 'armor'); // fix Under Armour
   if (BRAND_LOGOS[key]) return BRAND_LOGOS[key];
   
   // Try brand favicon for unknown brands
@@ -462,34 +465,161 @@ const getLogo = (name: string, domain: string) => {
         </div>
       </main>
 
-      {/* Expanded Card Modal */}
+      {/* Expanded Card Modal - POKEMON STYLE with full stats */}
       {selectedBrand && (
         <div 
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
           onClick={() => setSelectedBrand(null)}
         >
           {/* Backdrop */}
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-black/90 backdrop-blur-md" />
           
-          {/* Large Card */}
+          {/* Full Detail Card */}
           <div 
-            className="relative max-w-lg w-full"
+            className="relative max-w-2xl w-full max-h-[90vh] overflow-y-auto"
             onClick={e => e.stopPropagation()}
           >
-            <TCGCard 
-              brand={selectedBrand.name}
-              logo={selectedBrand.logo}
-              score={selectedBrand.score}
-              returnDays={selectedBrand.returnDays}
-              freeShippingThreshold={selectedBrand.freeShippingThreshold}
-              rank={0}
-              onClick={() => setSelectedBrand(null)}
-            />
+            {/* Main Card - Super Detailed */}
+            <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl p-6 border border-slate-700 shadow-2xl">
+              
+              {/* Header - Brand Name + HP */}
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h2 className="text-2xl font-bold text-white">{selectedBrand.name}</h2>
+                  <p className="text-slate-400 text-sm">Elite Retailer Collection</p>
+                </div>
+                <div className="text-right">
+                  <div className="inline-block bg-gradient-to-r from-emerald-500 to-cyan-500 px-4 py-1 rounded-full">
+                    <span className="text-3xl font-black text-white">{selectedBrand.score}</span>
+                  </div>
+                  <p className="text-slate-500 text-xs mt-1">RETURN RATING</p>
+                </div>
+              </div>
+
+              {/* Large Logo */}
+              <div className="flex justify-center mb-6">
+                <div className="w-32 h-32 bg-white rounded-xl p-4 flex items-center justify-center">
+                  <img 
+                    src={selectedBrand.logo} 
+                    alt={selectedBrand.name}
+                    className="object-contain w-full h-full"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = `https://www.google.com/s2/favicons?domain=${selectedBrand.name.toLowerCase()}&sz=128`;
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* STATS PANEL - Like Pokemon Trainer Card */}
+              <div className="bg-slate-800/50 rounded-xl p-4 mb-4 border border-slate-700">
+                <h3 className="text-slate-400 text-xs font-bold mb-3 border-b border-slate-700 pb-2">STATS</h3>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="flex justify-between">
+                    <span className="text-slate-500 text-sm">Return Window</span>
+                    <span className="text-white font-bold">{selectedBrand.returnDays} days</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-500 text-sm">Free Shipping</span>
+                    <span className="text-emerald-400 font-bold">
+                      {selectedBrand.freeShippingThreshold > 0 ? `$${selectedBrand.freeShippingThreshold}+` : 'Always'}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-500 text-sm">Rarity</span>
+                    <span className={`font-bold ${selectedBrand.score >= 90 ? 'text-amber-400' : selectedBrand.score >= 80 ? 'text-purple-400' : 'text-slate-400'}`}>
+                      {selectedBrand.score >= 95 ? 'LEGENDARY ★★★' : selectedBrand.score >= 90 ? 'GOLDEN ★★' : selectedBrand.score >= 80 ? 'RARE ★★' : selectedBrand.score >= 70 ? 'UNCOMMON ★' : 'COMMON'}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-500 text-sm">Holo Effect</span>
+                    <span className="text-cyan-400 font-bold">{selectedBrand.score >= 80 ? 'ACTIVE' : 'NONE'}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* ATTACKS - Like Pokemon Moves */}
+              <div className="bg-slate-800/50 rounded-xl p-4 mb-4 border border-slate-700">
+                <h3 className="text-slate-400 text-xs font-bold mb-3 border-b border-slate-700 pb-2">POLICIES</h3>
+                
+                {/* Policy 1 */}
+                <div className="flex gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center shrink-0">
+                    <span className="text-2xl">↩</span>
+                  </div>
+                  <div>
+                    <h4 className="text-emerald-400 font-bold text-sm">EASY RETURNS</h4>
+                    <p className="text-slate-400 text-sm">{selectedBrand.returnDays}-day return window. No restocking fees. Original packaging preferred but not required.</p>
+                  </div>
+                </div>
+                
+                {/* Policy 2 */}
+                <div className="flex gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center shrink-0">
+                    <span className="text-2xl">📦</span>
+                  </div>
+                  <div>
+                    <h4 className="text-blue-400 font-bold text-sm">FREE SHIPPING</h4>
+                    <p className="text-slate-400 text-sm">
+                      {selectedBrand.freeShippingThreshold > 0 
+                        ? `Free shipping on orders over $${selectedBrand.freeShippingThreshold}` 
+                        : 'Free shipping on all orders, always.'}
+                    </p>
+                  </div>
+                </div>
+                
+                {/* Policy 3 */}
+                <div className="flex gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shrink-0">
+                    <span className="text-2xl">💰</span>
+                  </div>
+                  <div>
+                    <h4 className="text-amber-400 font-bold text-sm">PRICE MATCH</h4>
+                    <p className="text-slate-400 text-sm">Price match guarantee available. Contact support within 30 days.</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* WEAKNESS/RESISTANCE - Pokemon style */}
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                <div className="bg-slate-800/30 rounded-lg p-3 border border-red-900/30">
+                  <h4 className="text-red-400 text-xs font-bold mb-1">WEAKNESS</h4>
+                  <p className="text-slate-500 text-sm">Final sale items not returnable</p>
+                </div>
+                <div className="bg-slate-800/30 rounded-lg p-3 border border-blue-900/30">
+                  <h4 className="text-blue-400 text-xs font-bold mb-1">RESISTANCE</h4>
+                  <p className="text-slate-500 text-sm">Defective items always accepted</p>
+                </div>
+              </div>
+
+              {/* RETREAT COST + FLOOR COST */}
+              <div className="flex justify-between items-center bg-slate-800/30 rounded-lg p-3 border border-slate-700 mb-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-500 text-xs">RETREAT COST</span>
+                  <div className="flex gap-1">
+                    <span className="w-6 h-6 rounded-full bg-slate-700 text-slate-400 text-xs flex items-center justify-center">0</span>
+                  </div>
+                </div>
+                <div className="text-slate-500 text-xs">
+                  RR1 &#183; 001/95 &#183; ReturnRate
+                </div>
+              </div>
+
+              {/* POKEDEX INFO */}
+              <div className="bg-slate-800/20 rounded-lg p-3 border border-slate-700 text-xs">
+                <h4 className="text-slate-400 font-bold mb-1">POKÉDEX INFO</h4>
+                <p className="text-slate-500">
+                  {selectedBrand.name} is an Elite Retailer species found in the ReturnRate ecosystem. 
+                  This card was discovered in 2025 and is rated {selectedBrand.score}/95 for return policy quality.
+                  {selectedBrand.score >= 90 && ' Highly sought after by collectors!'}
+                </p>
+              </div>
+
+            </div>
             
             {/* Close button */}
             <button
               onClick={() => setSelectedBrand(null)}
-              className="absolute -top-4 -right-4 w-10 h-10 rounded-full bg-slate-800 border border-slate-600 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-700 transition-colors"
+              className="absolute -top-3 -right-3 w-10 h-10 rounded-full bg-slate-800 border border-slate-600 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-700 transition-colors"
             >
               ✕
             </button>

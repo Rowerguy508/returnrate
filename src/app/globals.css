@@ -45,12 +45,42 @@ body {
     opacity: 0;
     transform: scale(0) rotate(0deg);
   }
+  25% {
+    opacity: 0.8;
+    transform: scale(1) rotate(90deg);
+  }
   50% {
-    opacity: 1;
-    transform: scale(1) rotate(180deg);
+    opacity: 0.4;
+    transform: scale(1.2) rotate(180deg);
+  }
+  75% {
+    opacity: 0.9;
+    transform: scale(1) rotate(270deg);
   }
 }
 
+@keyframes rainbow-wave {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes foil-shine {
+  0%, 100% {
+    transform: rotate(30deg) translateX(-100%);
+  }
+  50% {
+    transform: rotate(30deg) translateX(100%);
+  }
+}
+
+/* Holographic gradient overlay */
 /* Holographic gradient overlay */
 .holo-chroma {
   position: relative;
@@ -58,10 +88,9 @@ body {
     135deg,
     rgba(255, 0, 128, 0.4) 0%,
     rgba(255, 154, 0, 0.4) 15%,
-    rgba(208, 252, 59, 0.4) 30%,
-    rgba(79, 252, 156, 0.4) 45%,
-    rgba(63, 188, 252, 0.4) 60%,
-    rgba(155, 88, 252, 0.4) 75%,
+    rgba(0, 255, 128, 0.3) 30%,
+    rgba(0, 128, 255, 0.4) 45%,
+    rgba(128, 0, 255, 0.4) 60%,
     rgba(255, 0, 128, 0.4) 100%
   );
   background-size: 400% 400%;
@@ -69,16 +98,105 @@ body {
   z-index: 1;
 }
 
-/* Glitter particle overlay */
+/* Enhanced GLITTER - Shiny Pokémon style */
+.holo-glitter {
+  position: relative;
+  overflow: hidden;
+}
+
 .holo-glitter::before {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath d='M1 1h1v1H1zm2 0h1v1H3zM1 3h1v1H1zm2-2h1v1H3z' fill='white' fill-opacity='0.4'/%3E%3C/svg%3E");
-  animation: shimmer-sparkle 2s ease-in-out infinite;
-  pointer-events: none;
+  background-image: 
+    /* Larger sparkle dots */
+    radial-gradient(white 1px, transparent 1px),
+    radial-gradient(rgba(255,255,255,0.8) 0.5px, transparent 0.5px),
+    radial-gradient(#fbbf24 0.8px, transparent 0.8px),
+    radial-gradient(#a855f7 0.6px, transparent 0.6px),
+    radial-gradient(#06b6d4 0.7px, transparent 0.7px);
+  background-size: 
+    3px 3px,
+    5px 5px,
+    7px 7px,
+    11px 11px,
+    13px 13px;
+  background-position: 
+    0 0,
+    2px 3px,
+    5px 2px,
+    1px 7px,
+    6px 4px;
+  animation: shimmer-sparkle 1.5s ease-in-out infinite;
   z-index: 2;
+  opacity: 0.8;
+  border-radius: inherit;
+}
+
+/* Secondary glitter layer for depth */
+.holo-glitter::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(white 0.8px, transparent 0.8px);
+  background-size: 4px 4px;
+  animation: shimmer-sparkle 2s ease-in-out infinite reverse;
+  z-index: 3;
+  opacity: 0.4;
+  border-radius: inherit;
+}
+
+/* Intense rainbow shimmer for legendary cards */
+.holo-legendary {
+  position: relative;
+  overflow: hidden;
+}
+
+.holo-legendary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 200, 100, 0.3) 40%,
+    rgba(255, 255, 255, 0.5) 45%,
+    rgba(255, 200, 100, 0.3) 50%,
+    rgba(255, 150, 50, 0.2) 55%,
+    transparent 65%
+  );
+  background-size: 200% 200%;
+  animation: rainbow-wave 3s linear infinite;
+  z-index: 10;
   opacity: 0.6;
+  border-radius: inherit;
+}
+
+/* Extra foil shine effect */
+.holo-foil {
+  position: relative;
+}
+
+.holo-foil::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255,255,255,0.1) 25%,
+    rgba(255,255,255,0.3) 50%,
+    rgba(255,255,255,0.1) 75%,
+    transparent 100%
+  );
+  transform: rotate(30deg);
+  animation: foil-shine 4s ease-in-out infinite;
+  pointer-events: none;
+  border-radius: inherit;
 }
 
 /* Rarity-based chromatic borders */
