@@ -220,69 +220,43 @@ export default function Home() {
       .then(res => res.json())
       .then(data => {
         if (data.results) {
-          // Generate brand logo - canvas-based with initials in brand colors
-const generateLogo = (name: string, colors: string[]) => {
-  const canvas = document.createElement('canvas');
-  canvas.width = 200;
-  canvas.height = 200;
-  const ctx = canvas.getContext('2d')!;
-  
-  // Background with brand gradient
-  const gradient = ctx.createLinearGradient(0, 0, 200, 200);
-  gradient.addColorStop(0, colors[0] || '#1e40af');
-  gradient.addColorStop(1, colors[1] || '#3b82f6');
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, 200, 200);
-  
-  // White circle in center
-  ctx.fillStyle = '#ffffff';
-  ctx.beginPath();
-  ctx.arc(100, 100, 80, 0, Math.PI * 2);
-  ctx.fill();
-  
-  // Brand initials
-  const initials = name.split(' ').map(w => w[0]).join('').substring(0,2).toUpperCase();
-  ctx.fillStyle = colors[0] || '#1e40af';
-  ctx.font = 'bold 72px sans-serif';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(initials, 100, 100);
-  
-  return canvas.toDataURL();
+          // Brand logo URLs - verified working for top brands
+const BRAND_LOGOS: Record<string, string> = {
+  'amazon': 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
+  'bestbuy': 'https://upload.wikimedia.org/wikipedia/commons/2/28/Best_Buy_Logo.svg',
+  'target': 'https://upload.wikimedia.org/wikipedia/commons/4/44/Target_Corporation_logo.svg',
+  'walmart': 'https://upload.wikimedia.org/wikipedia/commons/c/ca/Walmart_logo.svg',
+  'costco': 'https://upload.wikimedia.org/wikipedia/commons/4/48/Costco_Logo.svg',
+  'nordstrom': 'https://upload.wikimedia.org/wikipedia/commons/6/61/Nordstrom_logo.svg',
+  'rei': 'https://upload.wikimedia.org/wikipedia/commons/c/cc/REI_Co-op_Logo.svg',
+  'zappos': 'https://upload.wikimedia.org/wikipedia/commons/5/53/Zappos.com_logo.svg',
+  'homedepot': 'https://upload.wikimedia.org/wikipedia/commons/7/7e/Home_Depot_logo.svg',
+  'lowes': 'https://upload.wikimedia.org/wikipedia/commons/3/3e/Lowe%27s_logo.svg',
+  'chewy': 'https://upload.wikimedia.org/wikipedia/commons/2/2a/Chewy_Logo.svg',
+  'petco': 'https://upload.wikimedia.org/wikipedia/commons/7/74/Petco_Logo.svg',
+  'nike': 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg',
+  'adidas': 'https://upload.wikimedia.org/wikipedia/commons/c/c4/Adidas_Logo.svg',
+  'underarmor': 'https://upload.wikimedia.org/wikipedia/commons/6/6d/Under_Armour_Logo.svg',
+  // Fallback to Google favicon for unknown brands
 };
 
-// Get brand colors for a store
-const getBrandData = (store: any) => {
-  const colors: Record<string, string[]> = {
-    amazon: ['#FF9900', '#FFB84D'],
-    bestbuy: ['#0046BE', '#0046BE'],
-    target: ['#CC0000', '#CC0000'],
-    walmart: ['#0071CE', '#0071CE'],
-    costco: ['#005DAA', '#005DAA'],
-    nordstrom: ['#C41E3A', '#C41E3A'],
-    rei: ['#00855A', '#00855A'],
-    zappos: ['#00A0EC', '#00A0EC'],
-    chewy: ['#78350F', '#92400E'],
-    petco: ['#0d9488', '#0d9488'],
-    homedepot: ['#F97316', '#FB923C'],
-    lowes: ['#0EA5E9', '#0EA5E9'],
-    // Default blue for unknown
-    default: ['#2563eb', '#3b82f6'],
-  };
-  const key = store.name.toLowerCase().replace(/[^a-z]/g, '');
-  return colors[key] || colors.default;
+// Get real brand logo - prefer Wikimedia, fallback to brand favicon
+const getLogo = (name: string, domain: string) => {
+  // Try Wikimedia first for known brands
+  const key = name.toLowerCase().replace(/[^a-z]/g, '');
+  if (BRAND_LOGOS[key]) return BRAND_LOGOS[key];
+  
+  // Try brand favicon for unknown brands
+  return `https://${domain}/favicon.ico`;
 };
 
-          const mapped = data.results.map((b: any) => {
-            const brandColors = getBrandData(b);
-            return {
-              name: b.name,
-              logo: generateLogo(b.name.replace(/[^a-zA-Z]/g, ''), brandColors),
-              score: b.overall_score,
+          const mapped = data.results.map((b: any) => ({
+            name: b.name,
+            logo: getLogo(b.name, b.domain),
+            score: b.overall_score,
             returnDays: b.return_days,
-freeShippingThreshold: b.free_shipping_threshold,
-            };
-          });
+            freeShippingThreshold: b.free_shipping_threshold,
+          }));
           setBrands(mapped);
         }
         setLoading(false);
