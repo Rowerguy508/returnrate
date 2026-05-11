@@ -220,16 +220,69 @@ export default function Home() {
       .then(res => res.json())
       .then(data => {
         if (data.results) {
-          // Get logo from brand's own favicon (always up to date)
-const getLogo = (domain: string) => `https://${domain}/favicon.ico`;
+          // Generate brand logo - canvas-based with initials in brand colors
+const generateLogo = (name: string, colors: string[]) => {
+  const canvas = document.createElement('canvas');
+  canvas.width = 200;
+  canvas.height = 200;
+  const ctx = canvas.getContext('2d')!;
+  
+  // Background with brand gradient
+  const gradient = ctx.createLinearGradient(0, 0, 200, 200);
+  gradient.addColorStop(0, colors[0] || '#1e40af');
+  gradient.addColorStop(1, colors[1] || '#3b82f6');
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, 200, 200);
+  
+  // White circle in center
+  ctx.fillStyle = '#ffffff';
+  ctx.beginPath();
+  ctx.arc(100, 100, 80, 0, Math.PI * 2);
+  ctx.fill();
+  
+  // Brand initials
+  const initials = name.split(' ').map(w => w[0]).join('').substring(0,2).toUpperCase();
+  ctx.fillStyle = colors[0] || '#1e40af';
+  ctx.font = 'bold 72px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(initials, 100, 100);
+  
+  return canvas.toDataURL();
+};
 
-          const mapped = data.results.map((b: any) => ({
-            name: b.name,
-            logo: getLogo(b.domain),
-            score: b.overall_score,
+// Get brand colors for a store
+const getBrandData = (store: any) => {
+  const colors: Record<string, string[]> = {
+    amazon: ['#FF9900', '#FFB84D'],
+    bestbuy: ['#0046BE', '#0046BE'],
+    target: ['#CC0000', '#CC0000'],
+    walmart: ['#0071CE', '#0071CE'],
+    costco: ['#005DAA', '#005DAA'],
+    nordstrom: ['#C41E3A', '#C41E3A'],
+    rei: ['#00855A', '#00855A'],
+    zappos: ['#00A0EC', '#00A0EC'],
+    chewy: ['#78350F', '#92400E'],
+    petco: ['#0d9488', '#0d9488'],
+    homedepot: ['#F97316', '#FB923C'],
+    lowes: ['#0EA5E9', '#0EA5E9'],
+    // Default blue for unknown
+    default: ['#2563eb', '#3b82f6'],
+  };
+  const key = store.name.toLowerCase().replace(/[^a-z]/g, '');
+  return colors[key] || colors.default;
+};
+
+          const mapped = data.results.map((b: any) => {
+            const brandColors = getBrandData(b);
+            return {
+              name: b.name,
+              logo: generateLogo(b.name.replace(/[^a-zA-Z]/g, ''), brandColors),
+              score: b.overall_score,
             returnDays: b.return_days,
-            freeShippingThreshold: b.free_shipping_threshold,
-          }));
+freeShippingThreshold: b.free_shipping_threshold,
+            };
+          });
           setBrands(mapped);
         }
         setLoading(false);
