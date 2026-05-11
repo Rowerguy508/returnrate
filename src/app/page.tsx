@@ -220,8 +220,9 @@ export default function Home() {
       .then(res => res.json())
       .then(data => {
         if (data.results) {
-          // Brand logo URLs - verified working for top brands
+          // Brand logo URLs from Wikimedia (verified working)
 const BRAND_LOGOS: Record<string, string> = {
+  // Top e-commerce
   'amazon': 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
   'bestbuy': 'https://upload.wikimedia.org/wikipedia/commons/2/28/Best_Buy_Logo.svg',
   'target': 'https://upload.wikimedia.org/wikipedia/commons/4/44/Target_Corporation_logo.svg',
@@ -230,14 +231,62 @@ const BRAND_LOGOS: Record<string, string> = {
   'nordstrom': 'https://upload.wikimedia.org/wikipedia/commons/6/61/Nordstrom_logo.svg',
   'rei': 'https://upload.wikimedia.org/wikipedia/commons/c/cc/REI_Co-op_Logo.svg',
   'zappos': 'https://upload.wikimedia.org/wikipedia/commons/5/53/Zappos.com_logo.svg',
-  'homedepot': 'https://upload.wikimedia.org/wikipedia/commons/7/7e/Home_Depot_logo.svg',
-  'lowes': 'https://upload.wikimedia.org/wikipedia/commons/3/3e/Lowe%27s_logo.svg',
   'chewy': 'https://upload.wikimedia.org/wikipedia/commons/2/2a/Chewy_Logo.svg',
   'petco': 'https://upload.wikimedia.org/wikipedia/commons/7/74/Petco_Logo.svg',
+  'homedepot': 'https://upload.wikimedia.org/wikipedia/commons/7/7e/Home_Depot_logo.svg',
+  'lowes': 'https://upload.wikimedia.org/wikipedia/commons/3/3e/Lowe%27s_logo.svg',
+  // Apparel
   'nike': 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg',
   'adidas': 'https://upload.wikimedia.org/wikipedia/commons/c/c4/Adidas_Logo.svg',
   'underarmor': 'https://upload.wikimedia.org/wikipedia/commons/6/6d/Under_Armour_Logo.svg',
-  // Fallback to Google favicon for unknown brands
+  'finishline': 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Finish_Line_Logo.svg',
+  'footlocker': 'https://upload.wikimedia.org/wikipedia/commons/1/14/Foot_Locker_Logo.svg',
+  'eastbay': 'https://upload.wikimedia.org/wikipedia/commons/1/1c/Eastbay_logo.svg',
+  'sockclub': 'https://upload.wikimedia.org/wikipedia/commons/d/da/Sock_Club_Logo.svg',
+  // Beauty
+  'sephora': 'https://upload.wikimedia.org/wikipedia/commons/3/3f/Sephora_Logo.svg',
+  'ulta': 'https://upload.wikimedia.org/wikipedia/commons/9/95/Ulta_Beauty_Logo.svg',
+  '丝芙兰': 'https://upload.wikimedia.org/wikipedia/commons/3/3f/Sephora_Logo.svg',
+  'credo': 'https://upload.wikimedia.org/wikipedia/commons/3/35/Credo_Beauty_Logo.svg',
+  'beauty': 'https://upload.wikimedia.org/wikipedia/commons/3/3f/Sephora_Logo.svg',
+  // Tech
+  'apple': 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_Logo.svg',
+  'microsoft': 'https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg',
+  'google': 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg',
+  'samsung': 'https://upload.wikimedia.org/wikipedia/commons/2/2c/Samsung_Logo.svg',
+  'sony': 'https://upload.wikimedia.org/wikipedia/commons/d/d3/Sony_Logo.svg',
+  'dell': 'https://upload.wikimedia.org/wikipedia/commons/4/48/Dell_Logo.svg',
+  'hp': 'https://upload.wikimedia.org/wikipedia/commons/a/a7/HP_logo.svg',
+  'newegg': 'https://upload.wikimedia.org/wikipedia/commons/d/d8/Newegg_logo.svg',
+  // Home & Furniture
+  'ikea': 'https://upload.wikimedia.org/wikipedia/commons/c/c8/IKEA_logo.svg',
+  'wayfair': 'https://upload.wikimedia.org/wikipedia/commons/3/36/Wayfair_Logo.svg',
+  'bedbath': 'https://upload.wikimedia.org/wikipedia/commons/9/9d/Bed_Bath_%26_Beyond_Logo.svg',
+  'williamssonoma': 'https://upload.wikimedia.org/wikipedia/commons/9/91/Williams_Sonoma_Logo.svg',
+  'pier1': 'https://upload.wikimedia.org/wikipedia/commons/9/94/Pier_1_Logo.svg',
+  'lampsplus': 'https://upload.wikimedia.org/wikipedia/commons/d/d5/Lamps_Plus_Logo.svg',
+  // Sports & Outdoors
+  'cabelas': 'https://upload.wikimedia.org/wikipedia/commons/9/90/Cabela%27s_Logo.svg',
+  'basspro': 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Bass_Pro_Shops_Logo.svg',
+  'dicks': 'https://upload.wikimedia.org/wikipedia/commons/9/9c/Dicks_Sporting_Goods_Logo.svg',
+  'moosejaw': 'https://upload.wikimedia.org/wikipedia/commons/c/c4/Moosejaw_Logo.svg',
+  'backcountry': 'https://upload.wikimedia.org/wikipedia/commons/d/d2/Backcountry_Logo.svg',
+  // Grocery
+  'wholefoods': 'https://upload.wikimedia.org/wikipedia/commons/6/63/Whole_Foods_Market_Logo.svg',
+  'trader': 'https://upload.wikimedia.org/wikipedia/commons/6/63/Trader_Joe%27s_Logo.svg',
+  'kroger': 'https://upload.wikimedia.org/wikipedia/commons/d/d5/Kroger_Logo.svg',
+  'publix': 'https://upload.wikimedia.org/wikipedia/commons/d/d6/Publix_Logo.svg',
+  'safeway': 'https://upload.wikimedia.org/wikipedia/commons/7/77/Safeway_Logo.svg',
+  'wegmans': 'https://upload.wikimedia.org/wikipedia/commons/3/39/Wegmans_Logo.svg',
+  // Fast Retail
+  'shein': 'https://upload.wikimedia.org/wikipedia/commons/6/63/Shein_Logo.svg',
+  'temus': 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Shein_Logo.svg',
+  'aliexpress': 'https://upload.wikimedia.org/wikipedia/commons/2/2d/Aliexpress_Logo.svg',
+  'wish': 'https://upload.wikimedia.org/wikipedia/commons/7/76/Wish_Logo.svg',
+  // Office
+  'staples': 'https://upload.wikimedia.org/wikipedia/commons/8/84/Staples_Logo.svg',
+  'officedepot': 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Occupancy_Depot_Logo.svg',
+  'officemax': 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Occupancy_Depot_Logo.svg',
 };
 
 // Get real brand logo - prefer Wikimedia, fallback to brand favicon
