@@ -480,109 +480,127 @@ const getLogo = (name: string, domain: string) => {
             onClick={e => e.stopPropagation()}
           >
             {/* Main Card - Super Detailed + REAL HOLOGRAPHIC DIVS */}
-            <div className={`relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl p-6 border-2 shadow-2xl overflow-hidden ${selectedBrand.score >= 95 ? 'holo-border-legendary' : selectedBrand.score >= 90 ? 'holo-border-legendary' : selectedBrand.score >= 80 ? 'holo-border-rare' : 'border-slate-700'}`}>
+            <div className={`relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl p-6 border-2 shadow-2xl overflow-hidden ${selectedBrand.score >= 90 ? 'holo-border-legendary' : selectedBrand.score >= 80 ? 'holo-border-rare' : 'border-slate-700'}`}>
               
-              {/* LAYER 1: Full-card rainbow chroma background (REAL DIV) */}
+              {/* LAYER 1: BRIGHT FULL rainbow - Pokémon holo style */}
               {selectedBrand.score >= 80 && (
                 <div 
                   className="absolute inset-0 z-[1] pointer-events-none"
                   style={{
-                    background: 'linear-gradient(135deg, rgba(255,0,128,0.35) 0%, rgba(255,154,0,0.35) 15%, rgba(208,252,59,0.3) 30%, rgba(79,252,156,0.3) 45%, rgba(63,188,252,0.35) 60%, rgba(155,88,252,0.35) 75%, rgba(255,0,128,0.35) 100%)',
+                    background: `
+                      linear-gradient(135deg, 
+                        #ff0000 0%, 
+                        #ff7600 14%, 
+                        #ffea00 28%, 
+                        #52ff00 42%, 
+                        #00e5ff 57%, 
+                        #2800ff 71%, 
+                        #d400ff 85%, 
+                        #ff0000 100%)
+                    `,
                     backgroundSize: '400% 400%',
-                    animation: 'chroma-shift 3s ease infinite',
+                    animation: 'chroma-shift 2s ease infinite',
+                    opacity: 0.7,
+                    mixBlendMode: 'overlay',
                   }}
                 />
               )}
               
-              {/* LAYER 2: Shimmer sweep (REAL DIV) */}
+              {/* LAYER 2: BIG diagonal shimmer sweep */}
               {selectedBrand.score >= 80 && (
                 <div 
                   className="absolute inset-0 z-[2] pointer-events-none"
                   style={{
-                    background: 'linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.2) 40%, rgba(255,255,255,0.4) 45%, rgba(255,255,255,0.2) 50%, transparent 60%)',
-                    backgroundSize: '300% 300%',
-                    animation: 'shimmer-sweep 4s ease-in-out infinite',
+                    background: 'linear-gradient(115deg, transparent 20%, rgba(255,255,255,0.4) 35%, rgba(255,255,255,0.7) 42%, rgba(255,255,255,0.4) 50%, transparent 65%)',
+                    backgroundSize: '200% 200%',
+                    animation: 'shimmer-sweep 2.5s ease-in-out infinite',
                   }}
                 />
               )}
               
-              {/* LAYER 3: Rainbow wave for legendary (REAL DIV) */}
-              {selectedBrand.score >= 90 && (
+              {/* LAYER 3: Starburst PRISMATIC pattern - KEY Pokemon holo feature */}
+              {selectedBrand.score >= 85 && (
                 <div 
                   className="absolute inset-0 z-[3] pointer-events-none"
                   style={{
-                    background: 'linear-gradient(45deg, transparent 25%, rgba(255,200,100,0.25) 35%, rgba(255,255,255,0.5) 42%, rgba(255,255,255,0.5) 45%, rgba(255,200,100,0.25) 55%, transparent 75%)',
-                    backgroundSize: '200% 200%',
-                    animation: 'rainbow-wave 2.5s linear infinite',
+                    background: `
+                      repeating-conic-gradient(
+                        from 0deg,
+                        rgba(255,0,100,0.15) 0deg 10deg,
+                        rgba(255,200,0,0.15) 10deg 20deg,
+                        rgba(0,255,100,0.15) 20deg 30deg,
+                        rgba(0,100,255,0.15) 30deg 40deg,
+                        rgba(200,0,255,0.15) 40deg 50deg,
+                        rgba(255,0,100,0.15) 50deg 60deg,
+                        rgba(255,200,0,0.15) 60deg 70deg,
+                        rgba(0,255,100,0.15) 70deg 80deg,
+                        rgba(0,100,255,0.15) 80deg 90deg,
+                        rgba(200,0,255,0.15) 90deg 100deg
+                      )
+                    `,
+                    backgroundSize: '100px 100px',
+                    animation: 'chroma-shift 4s linear infinite',
+                    opacity: 0.5,
                   }}
                 />
               )}
               
-{/* LAYER 4: MEGA GLITTER - Many more sparkles + animated */}
+              {/* LAYER 4: TONS of bright glitter - larger, more visible */}
               {selectedBrand.score >= 80 && (
                 <>
-                  {/* Static sparkles layer */}
+                  {/* Layer 4a: Large bright sparkles everywhere - 30+ dots */}
                   <div 
                     className="absolute inset-0 z-[4] pointer-events-none"
                     style={{
                       backgroundImage: `
-                        radial-gradient(1.2px 1.2px at 5% 8%, white 100%, transparent),
-                        radial-gradient(1.8px 1.8px at 12% 22%, #fbbf24 100%, transparent),
-                        radial-gradient(1.5px 1.5px at 18% 35%, rgba(255,255,255,0.95) 100%, transparent),
-                        radial-gradient(1.3px 1.3px at 25% 15%, #a855f7 100%, transparent),
-                        radial-gradient(1.6px 1.6px at 32% 42%, rgba(255,255,255,0.9) 100%, transparent),
-                        radial-gradient(1.4px 1.4px at 40% 28%, #06b6d4 100%, transparent),
-                        radial-gradient(1.2px 1.2px at 48% 52%, white 100%, transparent),
-                        radial-gradient(1.7px 1.7px at 55% 18%, #f472b6 100%, transparent),
-                        radial-gradient(1.3px 1.3px at 62% 38%, rgba(255,255,255,0.85) 100%, transparent),
-                        radial-gradient(1.5px 1.5px at 70% 25%, #fbbf24 100%, transparent),
-                        radial-gradient(1.2px 1.2px at 78% 48%, #a855f7 100%, transparent),
-                        radial-gradient(1.6px 1.6px at 85% 12%, rgba(255,255,255,0.9) 100%, transparent),
-                        radial-gradient(1.4px 1.4px at 92% 35%, #06b6d4 100%, transparent),
-                        radial-gradient(1.3px 1.3px at 8% 58%, white 100%, transparent),
-                        radial-gradient(1.5px 1.5px at 15% 72%, #f472b6 100%, transparent),
-                        radial-gradient(1.2px 1.2px at 22% 85%, rgba(255,255,255,0.8) 100%, transparent),
-                        radial-gradient(1.6px 1.6px at 38% 65%, #fbbf24 100%, transparent),
-                        radial-gradient(1.4px 1.4px at 45% 78%, rgba(255,255,255,0.9) 100%, transparent),
-                        radial-gradient(1.3px 1.3px at 52% 62%, #a855f7 100%, transparent),
-                        radial-gradient(1.5px 1.5px at 65% 55%, white 100%, transparent),
-                        radial-gradient(1.2px 1.2px at 72% 72%, #06b6d4 100%, transparent),
-                        radial-gradient(1.7px 1.7px at 82% 68%, rgba(255,255,255,0.85) 100%, transparent),
-                        radial-gradient(1.3px 1.3px at 88% 82%, #f472b6 100%, transparent),
-                        radial-gradient(1.4px 1.4px at 95% 58%, white 100%, transparent)`,
-                      backgroundSize: '80px 80px',
-                      animation: 'glitter-sparkle 2s ease-in-out infinite',
+                        radial-gradient(3px 3px at 3% 5%, white 100%, transparent),
+                        radial-gradient(4px 4px at 8% 18%, #ffdd00 100%, transparent),
+                        radial-gradient(3.5px 3.5px at 12% 32%, white 100%, transparent),
+                        radial-gradient(3px 3px at 18% 8%, #ff44ff 100%, transparent),
+                        radial-gradient(4px 4px at 25% 28%, white 100%, transparent),
+                        radial-gradient(3px 3px at 32% 45%, #00ddff 100%, transparent),
+                        radial-gradient(3.5px 3.5px at 40% 15%, white 100%, transparent),
+                        radial-gradient(4px 4px at 48% 38%, #ffdd00 100%, transparent),
+                        radial-gradient(3px 3px at 55% 52%, white 100%, transparent),
+                        radial-gradient(3.5px 3.5px at 62% 22%, #ff44ff 100%, transparent),
+                        radial-gradient(4px 4px at 70% 42%, white 100%, transparent),
+                        radial-gradient(3px 3px at 78% 58%, #00ddff 100%, transparent),
+                        radial-gradient(3.5px 3.5px at 85% 35%, white 100%, transparent),
+                        radial-gradient(4px 4px at 92% 48%, #ffdd00 100%, transparent),
+                        radial-gradient(3px 3px at 5% 55%, white 100%, transparent),
+                        radial-gradient(4px 4px at 15% 72%, #ff44ff 100%, transparent),
+                        radial-gradient(3.5px 3.5px at 22% 85%, white 100%, transparent),
+                        radial-gradient(3px 3px at 35% 62%, #00ddff 100%, transparent),
+                        radial-gradient(4px 4px at 42% 78%, white 100%, transparent),
+                        radial-gradient(3px 3px at 52% 68%, #ffdd00 100%, transparent),
+                        radial-gradient(3.5px 3.5px at 65% 55%, white 100%, transparent),
+                        radial-gradient(4px 4px at 72% 82%, #ff44ff 100%, transparent),
+                        radial-gradient(3px 3px at 82% 72%, white 100%, transparent),
+                        radial-gradient(3.5px 3.5px at 88% 88%, #00ddff 100%, transparent),
+                        radial-gradient(3px 3px at 10% 42%, white 100%, transparent),
+                        radial-gradient(4px 4px at 28% 25%, white 100%, transparent),
+                        radial-gradient(3.5px 3.5px at 58% 12%, #ffdd00 100%, transparent),
+                        radial-gradient(3px 3px at 75% 18%, white 100%, transparent),
+                        radial-gradient(4px 4px at 95% 25%, #ff44ff 100%, transparent)`,
+                      backgroundSize: '60px 60px',
+                      animation: 'glitter-sparkle 1.5s ease-in-out infinite',
                     }}
                   />
-                  {/* Animated floating sparkles */}
+                  {/* Layer 4b: Extra shimmer layer - starburst */}
                   <div 
                     className="absolute inset-0 z-[4] pointer-events-none"
                     style={{
                       backgroundImage: `
                         radial-gradient(2px 2px at 20% 20%, white 100%, transparent),
-                        radial-gradient(2.5px 2.5px at 50% 50%, rgba(255,255,255,0.9) 100%, transparent),
-                        radial-gradient(2px 2px at 80% 30%, #fbbf24 100%, transparent),
-                        radial-gradient(2.2px 2.2px at 35% 70%, #a855f7 100%, transparent),
-                        radial-gradient(1.8px 1.8px at 65% 80%, rgba(255,255,255,0.85) 100%, transparent)`,
-                      backgroundSize: '150px 150px',
-                      animation: 'glitter-float 3s ease-in-out infinite',
-                    }}
-                  />
-                  {/* Extra tiny starbursts */}
-                  <div 
-                    className="absolute inset-0 z-[4] pointer-events-none"
-                    style={{
-                      backgroundImage: `
-                        radial-gradient(0.8px 0.8px at 10% 50%, white 100%, transparent),
-                        radial-gradient(1px 1px at 30% 10%, #fbbf24 100%, transparent),
-                        radial-gradient(0.8px 0.8px at 50% 90%, rgba(255,255,255,0.9) 100%, transparent),
-                        radial-gradient(1px 1px at 70% 60%, #a855f7 100%, transparent),
-                        radial-gradient(0.8px 0.8px at 90% 40%, #06b6d4 100%, transparent),
-                        radial-gradient(1px 1px at 25% 75%, #f472b6 100%, transparent),
-                        radial-gradient(0.8px 0.8px at 75% 25%, white 100%, transparent),
-                        radial-gradient(1px 1px at 60% 40%, #fbbf24 100%, transparent)`,
-                      backgroundSize: '60px 60px',
-                      animation: 'glitter-twinkle 1.5s ease-in-out infinite',
+                        radial-gradient(2.5px 2.5px at 40% 60%, rgba(255,255,255,0.9) 100%, transparent),
+                        radial-gradient(2px 2px at 60% 30%, #ffdd00 100%, transparent),
+                        radial-gradient(2.2px 2.2px at 80% 70%, #ff44ff 100%, transparent),
+                        radial-gradient(1.8px 1.8px at 30% 80%, white 100%, transparent),
+                        radial-gradient(2px 2px at 70% 10%, #00ddff 100%, transparent),
+                        radial-gradient(2.5px 2.5px at 50% 90%, white 100%, transparent),
+                        radial-gradient(2px 2px at 90% 50%, rgba(255,255,255,0.8) 100%, transparent)`,
+                      backgroundSize: '80px 80px',
+                      animation: 'glitter-float 2s ease-in-out infinite',
                     }}
                   />
                 </>
