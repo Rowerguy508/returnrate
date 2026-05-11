@@ -474,14 +474,25 @@ const getLogo = (name: string, domain: string) => {
           {/* Backdrop */}
           <div className="absolute inset-0 bg-black/90 backdrop-blur-md" />
           
-          {/* Full Detail Card */}
+          {/* Full Detail Card - With Holographic Effects */}
           <div 
             className="relative max-w-2xl w-full max-h-[90vh] overflow-y-auto"
             onClick={e => e.stopPropagation()}
           >
-            {/* Main Card - Super Detailed */}
-            <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl p-6 border border-slate-700 shadow-2xl">
+            {/* Main Card - Super Detailed + HOLOGRAPHIC */}
+            <div className={`relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl p-6 border-2 shadow-2xl overflow-hidden ${selectedBrand.score >= 80 ? 'holo-foil holo-glitter' : ''} ${selectedBrand.score >= 95 ? 'holo-border-legendary' : selectedBrand.score >= 90 ? 'holo-border-legendary' : selectedBrand.score >= 80 ? 'holo-border-rare' : 'border-slate-700'}`}>
               
+              {/* Holographic overlay for rare/legendary */}
+              {selectedBrand.score >= 80 && (
+                <>
+                  <div className="absolute inset-0 holo-shimmer-bg z-[5]" />
+                  <div className="absolute inset-0 holo-chroma z-[6]" />
+                  <div className="absolute inset-0 holo-legendary z-[7]" />
+                </>
+              )}
+              
+              {/* Card Content - above the holographic layers */}
+              <div className="relative z-10">
               {/* Header - Brand Name + HP */}
               <div className="flex justify-between items-start mb-4">
                 <div>
@@ -489,7 +500,7 @@ const getLogo = (name: string, domain: string) => {
                   <p className="text-slate-400 text-sm">Elite Retailer Collection</p>
                 </div>
                 <div className="text-right">
-                  <div className="inline-block bg-gradient-to-r from-emerald-500 to-cyan-500 px-4 py-1 rounded-full">
+                  <div className={`inline-block px-4 py-1 rounded-full ${selectedBrand.score >= 90 ? 'bg-gradient-to-r from-amber-500 to-yellow-400' : selectedBrand.score >= 80 ? 'bg-gradient-to-r from-purple-500 to-cyan-500' : 'bg-gradient-to-r from-slate-600 to-slate-500'}`}>
                     <span className="text-3xl font-black text-white">{selectedBrand.score}</span>
                   </div>
                   <p className="text-slate-500 text-xs mt-1">RETURN RATING</p>
@@ -613,7 +624,8 @@ const getLogo = (name: string, domain: string) => {
                   {selectedBrand.score >= 90 && ' Highly sought after by collectors!'}
                 </p>
               </div>
-
+              
+              </div>{/* End relative z-10 wrapper */}
             </div>
             
             {/* Close button */}
